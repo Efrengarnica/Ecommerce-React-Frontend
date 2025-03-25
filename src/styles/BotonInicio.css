@@ -6,15 +6,3 @@
 .has-background-black-transparent:hover {
 background-color: rgba(0, 0, 0, 0.5) !important;
 }
-
-.column-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    background-size: cover;
-    background-position: center;
-}
