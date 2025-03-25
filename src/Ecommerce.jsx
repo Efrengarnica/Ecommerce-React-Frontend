@@ -5,10 +5,11 @@ import { EcommercePage } from './pages/EcommercePage'
 import { AcercaDePage } from './pages/AcercaDePage'
 import { ContactoPage } from './pages/ContactoPage'
 import { PerfilPage } from './pages/PerfilPage'
+import './Ecommerce.css'
 
 export const Ecommerce = () => {
   return (
-    <>
+    <div className='containerPrincipal'>
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={<EcommercePage></EcommercePage>}></Route>
@@ -17,6 +18,6 @@ export const Ecommerce = () => {
         <Route path='/perfil' element={<PerfilPage></PerfilPage>}></Route>
         <Route path='/*' element={<Navigate to='/'/>}></Route>
       </Routes>
-    </>
+    </div>
   )
 }
