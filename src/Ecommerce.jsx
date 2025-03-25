@@ -5,6 +5,8 @@ import { EcommercePage } from './pages/EcommercePage'
 import { AcercaDePage } from './pages/AcercaDePage'
 import { ContactoPage } from './pages/ContactoPage'
 import { PerfilPage } from './pages/PerfilPage'
+import { ProductosDeHombrePage } from './pages/ProductosDeHombrePage'
+import { ProductosDeMujerPage } from './pages/ProductosDeMujerPage'
 import './Ecommerce.css'
 
 export const Ecommerce = () => {
@@ -16,6 +18,8 @@ export const Ecommerce = () => {
         <Route path='/acercaDe' element={<AcercaDePage></AcercaDePage>}></Route>
         <Route path='/contacto' element={<ContactoPage></ContactoPage>}></Route>
         <Route path='/perfil' element={<PerfilPage></PerfilPage>}></Route>
+        <Route path='/productos-hombre' element={<ProductosDeHombrePage></ProductosDeHombrePage>}></Route>
+        <Route path='/productos-mujer' element={<ProductosDeMujerPage></ProductosDeMujerPage>}></Route>
         <Route path='/*' element={<Navigate to='/'/>}></Route>
       </Routes>
     </div>
