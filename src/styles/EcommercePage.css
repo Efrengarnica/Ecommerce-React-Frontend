@@ -14,14 +14,14 @@
 }
 
 .bg-image-1 {
-  background: rgba(128, 128, 128, 0.5) url("../assets/hombre.jpg");
+  background: rgba(128, 128, 128, 0.5) url("/assets/hombre.jpg");
   background-size:cover;
   background-repeat: no-repeat;
   background-blend-mode:multiply;
 }
 
 .bg-image-2 {
-  background: rgba(128, 128, 128, 0.5) url("../assets/mujer-2.jpg");
+  background: rgba(128, 128, 128, 0.5) url("/assets/mujer-2.jpg");
   background-size:cover;
   background-repeat: no-repeat;
   background-blend-mode:multiply;
