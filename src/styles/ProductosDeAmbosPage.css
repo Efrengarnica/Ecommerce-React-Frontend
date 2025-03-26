@@ -1,0 +1,11 @@
+#container-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.sinCoincidencias {
+    height: 200px;
+    width: 100%;
+    max-width: 100%;
+}

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const useProductosStore = create((set) => ({
+const useProductosStore = create((set, get) => ({
     productos : {
         hombre: [
             {
@@ -283,8 +283,19 @@ const useProductosStore = create((set) => ({
 
     findProductById : (id) => {
         return get().productosMap.get(id)
-    }
+    },
 
+    productsByCategory : (categoria) => {
+        return get().productos[categoria] || []
+    },
+
+    findProducts : (palabra, categoria) => {
+        const productosBuscados = get().productsByCategory(categoria);
+        if (!palabra) return productosBuscados; // Si no hay búsqueda, mostrar todos los productos
+        const query = palabra.toLowerCase();  
+        const resultados = productosBuscados.filter(producto => producto.title.toLowerCase().includes(query));
+        return resultados
+    } 
 }))
 
 export default useProductosStore;
