@@ -1,16 +1,17 @@
 import { create } from "zustand";
 import useProductosStore from "./useProductosStore";
 
-
 //Por terminar
-const useCartStore = create((set) => ({
+const useCartStore = create((set, get) => ({
+  //Estados para mostrar el modal de carrito
+  isCartOpen: false, 
+  openCart: () => set({ isCartOpen: true }), 
+  closeCart: () => set({ isCartOpen: false }),
 
-
-  carritoCompras: new Map(), // Estado inicial como un Map vacío.
+  carritoCompras: new Map(),
   // Función para agregar un nuevo producto
   agregarProducto: (id) => {
     const productoAgregar = useProductosStore.getState().findProductById(id);
-
     if (productoAgregar) {
         set((state) => {
           const nuevoCarrito = new Map(state.carritoCompras);
@@ -25,9 +26,7 @@ const useCartStore = create((set) => ({
     set((state) => ({
       productos: state.productos.filter((producto) => producto.id !== id),
     }));
-  },
-
-
+  }
 }));
 
-export default useProductosStore;
+export default useCartStore;

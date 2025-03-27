@@ -1,0 +1,25 @@
+/* 
+<!-- 2) Estilos personalizados para “forzar” el modal a ser un off-canvas -->
+      Convertimos el .modal en un panel lateral:
+      - El .modal-background de Bulma seguirá siendo la capa oscura
+      - .modal-content se ancla a la derecha y se desliza con transform
+*/
+/* Ajusta la clase de tu modal para que no tenga la alineación central típica */
+.modal.offcanvas-modal .modal-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 350px;        /* Ajusta el ancho a tu gusto */
+    max-width: 100%;
+    min-height: 100vh;       /* Para que ocupe toda la altura de la pantalla */
+    background-color: #fff;
+    transform: translateX(100%); 
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    height: auto;    /* Si hay muchos productos, aparece scroll */
+}
+  
+/* Cuando el modal está activo, desplazamos el panel a 0 */
+.modal.offcanvas-modal.is-active .modal-content {
+    transform: translateX(0);
+}
