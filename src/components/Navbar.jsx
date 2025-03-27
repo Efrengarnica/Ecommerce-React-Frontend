@@ -1,7 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import useCartStore from '../store/useCartStore'
 
 export const Navbar = () => {
+    const openCart = useCartStore((state) => state.openCart);
     return (
         <nav className="navbar has-background-black" role="navigation" aria-label="main navigation" id="navbar-id">
             <div className="navbar-brand">
@@ -22,7 +24,12 @@ export const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     <div className="navbar-item">
-                        <button className="button is-light" id="open-cart">
+                        <button 
+                        type='button'
+                        className="button is-light" 
+                        id="open-cart"
+                        onClick={openCart}
+                        >
                             🛒 Carrito (<p id="totalDeProductosEnCarrito"></p>)
                         </button>
                     </div>
