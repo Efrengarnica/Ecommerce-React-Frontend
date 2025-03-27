@@ -1,5 +1,7 @@
 import React from 'react'
 import useCartStore from '../store/useCartStore'
+import '../styles/ModalCarrito.css'
+
 export const ModalCarrito = () => {
     const isCartOpen = useCartStore((state) => state.isCartOpen);
     const closeCart = useCartStore((state) => state.closeCart);
