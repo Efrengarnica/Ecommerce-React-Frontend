@@ -1,6 +1,7 @@
 import React from 'react'
 import useCartStore from '../store/useCartStore'
 import '../styles/ModalCarrito.css'
+import { CardCarrito } from './CardCarrito'
 
 export const ModalCarrito = () => {
     const isCartOpen = useCartStore((state) => state.isCartOpen);
@@ -16,7 +17,13 @@ export const ModalCarrito = () => {
                     </header>
                     <hr/>
                     <div id="divProductosCarrito">
-                        <p className="has-text-grey">Tu cesta está vacía</p>
+                        {/* <p className="has-text-grey">Tu cesta está vacía</p> */}
+                        <CardCarrito
+                            image={"h1.jpg"}
+                            title={"Chamarra"}
+                            price={20}
+                            cantidadProducto={2}
+                        />
                     </div>
                     <hr/>
                     <footer>
