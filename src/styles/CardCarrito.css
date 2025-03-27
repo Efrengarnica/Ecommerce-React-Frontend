@@ -1,0 +1,12 @@
+.botones-carrito {
+    background-color: rgb(255, 255, 255); 
+    width: 20px; 
+    height: 20px;
+    border-radius: 50%; 
+    border: none;
+}
+
+.iconos-cart {
+    color: black;
+    font-size: 12px;
+}
