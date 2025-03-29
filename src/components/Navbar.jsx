@@ -5,6 +5,8 @@ import useCartStore from '../store/useCartStore'
 export const Navbar = () => {
     const openCart = useCartStore((state) => state.openCart);
     const calcularTotalProductos = useCartStore((state) => state.calcularTotalProductos());
+    const colorBotonCarrito = useCartStore((state) => state.colorBotonCarrito)
+
     return (
         <nav className="navbar has-background-black is-fixed-top" role="navigation" aria-label="main navigation" id="navbar-id">
             <div className="navbar-brand">
@@ -27,6 +29,7 @@ export const Navbar = () => {
                     <div className="navbar-item">
                         <button 
                         type='button'
+                        style={{ backgroundColor: colorBotonCarrito }} 
                         className="button is-light" 
                         id="open-cart"
                         onClick={openCart}
