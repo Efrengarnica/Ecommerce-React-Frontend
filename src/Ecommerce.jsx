@@ -8,11 +8,15 @@ import { PerfilPage } from './pages/PerfilPage'
 import { ProductosDeHombrePage } from './pages/ProductosDeHombrePage'
 import { ProductosDeMujerPage } from './pages/ProductosDeMujerPage'
 import './Ecommerce.css'
+import { ModalCarrito } from './components/ModalCarrito'
+import { ModalCompra } from './components/ModalCompra'
 
 export const Ecommerce = () => {
   return (
     <div className='containerPrincipal'>
       <Navbar></Navbar>
+      <ModalCarrito/>
+      <ModalCompra/>
       <Routes>
         <Route path='/' element={<EcommercePage></EcommercePage>}></Route>
         <Route path='/acercaDe' element={<AcercaDePage></AcercaDePage>}></Route>

@@ -33,6 +33,27 @@ const useCartStore = create((set, get) => {
     openCart: () => set({ isCartOpen: true }),
     closeCart: () => set({ isCartOpen: false }),
 
+    //Estados para mostrar el modal de comora exitosa.
+    isModalPurchaseOpen: false,
+    openModalPurchase: () => {
+      if (get().carritoCompras.size === 0) return
+      set({ 
+        isCartOpen:false,
+        isModalPurchaseOpen:true,
+        carritoCompras: new Map()
+       })
+    },
+    closeModalPurchase: () => set({ isModalPurchaseOpen: false }),
+
+    //Estado para hacer el efecto de cambio de color del boton carrito
+    colorBotonCarrito : '#abb1bf',
+    setColorBotonCarrito : () => {
+      set({colorBotonCarrito: 'rgb(92, 244, 130)'})
+      setTimeout(() => {
+        set({colorBotonCarrito: '#abb1bf'});
+      }, 500);
+    },
+
     //Estado incial de mi carrito.
     carritoCompras: new Map(),
 
