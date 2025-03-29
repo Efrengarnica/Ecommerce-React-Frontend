@@ -2,9 +2,6 @@ import "../styles/Card.css";
 import { BotonProducto } from "./BotonProducto";
 
 export const Card = ({ id, title, categoria, image, price, talla }) => {
-    //Falta Realizar esta funcion
-    const clickAgregarACarrito = () => {
-    };
     return (
         <div className="column is-3 mb-6 mt-6">
             <div className="card has-background-gray">
@@ -27,6 +24,7 @@ export const Card = ({ id, title, categoria, image, price, talla }) => {
                 <footer className="card-footer mt-0 is-flex is-justify-content-center is-align-items-center">
                     <BotonProducto
                     texto={"Agregar a Carrito"}
+                    id={id}
                     >   
                     </BotonProducto>
                 </footer>

@@ -4,8 +4,9 @@ import useCartStore from '../store/useCartStore'
 
 export const Navbar = () => {
     const openCart = useCartStore((state) => state.openCart);
+    const calcularTotalProductos = useCartStore((state) => state.calcularTotalProductos());
     return (
-        <nav className="navbar has-background-black" role="navigation" aria-label="main navigation" id="navbar-id">
+        <nav className="navbar has-background-black is-fixed-top" role="navigation" aria-label="main navigation" id="navbar-id">
             <div className="navbar-brand">
                 <NavLink to='/' className="navbar-item" href="#">
                     <span className="navbar-item colorLogo">E-commerce</span>
@@ -30,7 +31,7 @@ export const Navbar = () => {
                         id="open-cart"
                         onClick={openCart}
                         >
-                            🛒 Carrito (<p id="totalDeProductosEnCarrito"></p>)
+                            {`🛒 Carrito ${calcularTotalProductos}`}
                         </button>
                     </div>
                 </div>
