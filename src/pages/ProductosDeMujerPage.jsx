@@ -3,7 +3,6 @@ import useProductosStore from "../store/useProductosStore";
 import { Card } from '../components/Card';
 import { BuscadorProductos } from '../components/BuscadorProductos';
 import '../styles/ProductosDeAmbosPage.css';
-import { ModalCarrito } from '../components/ModalCarrito';
 
 export const ProductosDeMujerPage = () => {
 
@@ -19,7 +18,6 @@ export const ProductosDeMujerPage = () => {
 
   return (
     <>
-      <ModalCarrito/>
       <section className="section" id="sectionId">
         <div className="container" id="container-principal">
           <BuscadorProductos
