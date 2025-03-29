@@ -6,6 +6,8 @@ import { CardCarrito } from './CardCarrito'
 export const ModalCarrito = () => {
     const isCartOpen = useCartStore((state) => state.isCartOpen);
     const closeCart = useCartStore((state) => state.closeCart);
+    const carritoCompras = useCartStore((state) => state.carritoCompras)
+    const calcularTotal = useCartStore((state) => state.calcularTotal())
     return (
         <div className={`modal offcanvas-modal${isCartOpen ? " is-active" : ""}`}>
             <div className="modal-background" id="close-modal-bg" onClick={closeCart}></div>
@@ -15,20 +17,45 @@ export const ModalCarrito = () => {
                         <h2 className="title is-5">Tu cesta</h2>
                         <button className="delete" id="close-cart-btn" onClick={closeCart}></button>
                     </header>
-                    <hr/>
+                    <hr />
                     <div id="divProductosCarrito">
-                        {/* <p className="has-text-grey">Tu cesta está vacía</p> */}
-                        <CardCarrito
-                            image={"h1.jpg"}
-                            title={"Chamarra"}
-                            price={20}
-                            cantidadProducto={2}
-                        />
+                        {
+                            [...carritoCompras.values()].length === 0 ? (
+                                <p className="has-text-grey">Tu cesta está vacía</p>
+                            )
+                                : (
+                                    [...carritoCompras.values()].map(producto => (
+                                        <CardCarrito
+                                            key={producto.id}
+                                            id={producto.id}
+                                            image={producto.image}
+                                            title={producto.title}
+                                            price={producto.price}
+                                            cantidadProducto={producto.cantidadProducto}
+                                        >
+                                        </CardCarrito>
+                                    ))
+                                )
+                        }
                     </div>
-                    <hr/>
+                    <hr />
                     <footer>
                         <div className="is-flex is-justify-content-space-between" id="totalCarrito">
-                            <p className="has-text-weight-semibold">Total: $0.00</p>
+                            {
+                                [...carritoCompras.values()].length === 0 ? (
+                                    <p className="has-text-weight-semibold">Total: $0.00</p>
+                                ) : (
+                                    <>
+                                        <div class="totalCarrito-fila-precio-letras">
+                                            <p class="is-size-6 has-text-weight-bold">Total</p>
+                                            <p class="is-size-6 has-text-gray-light">IVA incluido</p>
+                                        </div>
+                                        <div class="totalCarrito-fila-precio-dinero">
+                                            <p class="is-size-6 has-text-weight-bold">MXN ${calcularTotal}</p>
+                                        </div>
+                                    </>
+                                )
+                            }
                         </div>
                         <button className="button is-success is-fullwidth" id="botonFinalizarCompra">Finalizar compra</button>
                     </footer>
