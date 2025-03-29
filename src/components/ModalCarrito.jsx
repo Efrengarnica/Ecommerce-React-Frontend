@@ -8,6 +8,7 @@ export const ModalCarrito = () => {
     const closeCart = useCartStore((state) => state.closeCart);
     const carritoCompras = useCartStore((state) => state.carritoCompras)
     const calcularTotal = useCartStore((state) => state.calcularTotal())
+    const openModalPurchase = useCartStore((state) => state.openModalPurchase)
     return (
         <div className={`modal offcanvas-modal${isCartOpen ? " is-active" : ""}`}>
             <div className="modal-background" id="close-modal-bg" onClick={closeCart}></div>
@@ -57,7 +58,13 @@ export const ModalCarrito = () => {
                                 )
                             }
                         </div>
-                        <button className="button is-success is-fullwidth" id="botonFinalizarCompra">Finalizar compra</button>
+                        <button 
+                        className="button is-success is-fullwidth" 
+                        id="botonFinalizarCompra"
+                        onClick={openModalPurchase}
+                        >
+                            Finalizar compra
+                        </button>
                     </footer>
                 </div>
             </div>
