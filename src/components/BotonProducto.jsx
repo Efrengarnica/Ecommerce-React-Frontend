@@ -3,17 +3,19 @@ import '../styles/BotonProducto.css'
 import useCartStore from '../store/useCartStore'
 
 export const BotonProducto = ({ texto, id }) => {
-  const modificarCarrito = useCartStore((state) => state.modificarCarrito);
+
   const setColorBotonCarrito = useCartStore((state) => state.setColorBotonCarrito)
-  const accionesBoton = (id) => {
+  const updateCartItem = useCartStore((state) => state.updateCartItem)
+  const accionesBoton = (idProducto, operacion) => {
     setColorBotonCarrito()
-    modificarCarrito(id)
+    updateCartItem(idProducto, operacion)
   }
+
   return (
     <button 
     type="button" 
     className="agregarACarrito button is-light has-background-black has-text-white mt-3"
-    onClick={() => accionesBoton(id)}
+    onClick={() => accionesBoton(id, "suma")}
     >
     {texto}
     </button>
