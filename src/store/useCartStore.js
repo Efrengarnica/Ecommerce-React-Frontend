@@ -1,51 +1,32 @@
 import { create } from "zustand";
 import useProductosStore from "./useProductosStore";
+import {getCarritoUser, postCarritoItem, editCartItem, deleteCartItem, clearCartItems} from '../../api/requestsCarrito.js'
 
-//Por terminar
-const useCartStore = create((set, get) => {
-  //Cuidado se trae una solo ves si cambia productosMap este no cambia.
-  //productosMap: useProductosStore.getState().productosMap, No me conviene ya que si aplico la de crear productos desde mi pagina esto no se actualizara
-  //productosMap: useProductosStore((state) => state.productosMap), No se puede usar dentro de un Store
+//Por el momento usaré un usuario, aún no implemento multiples usuarios
+//Datos usuario, en mi base tengo este usuario y este es su id de su carrito
+const userCartId = "3fc7185a-c65e-434e-9a11-0562e88a5712"
 
-  //De esta manera escucho los cambios que van a ver en el store de productos, pero solo estaré escuchando los cambios de productosMap si hay
-  //cambios en otro de sus estados no los escucharé y por ende no volveré a ejecutar esta funcion para actucalizar el valor de productosMap.
+const useCartStore = create((set, get) => ({
 
-  //Tengo mi primer version
-  const initialProductosMap = useProductosStore.getState().productosMap;
-
-  //Esto cambia mi version cuando se actualiza productosMap en el otro store. 
-  const unsubscribe = useProductosStore.subscribe(
-    (state) => state.productosMap, // Solo se suscribe a productosMap
-    (productosMap) => {
-      //Aqui es donde cuando cambia el productosMap del otro store lo setea a mi store de Cart con el nuevo valor
-      set({ productosMap });
-    }
-  );
-
-  return {
-    //ESTADOS//
-
-    //Aqui defino mi estado del store de productos que cambiará cuando el valor de productosMap cambie.
-    productosMap: initialProductosMap,
-
-    //Estados para mostrar el modal de carrito
+    //Estados para mostrar el modal de carrito.
     isCartOpen: false,
     openCart: () => set({ isCartOpen: true }),
     closeCart: () => set({ isCartOpen: false }),
 
-    //Estados para mostrar el modal de comora exitosa.
+    //Estados para mostrar el modal de compra exitosa.
     isModalPurchaseOpen: false,
-    openModalPurchase: () => {
-      if (get().carritoCompras.size === 0) return
+    openModalPurchase: async() => {
+      if (get().carritoComprasUsuario?.items?.length === 0)  return
       set({ 
         isCartOpen:false,
         isModalPurchaseOpen:true,
-        carritoCompras: new Map()
        })
+      await clearCartItems("3fc7185a-c65e-434e-9a11-0562e88a5712")
+      await get().fetchCartUsuario()
     },
     closeModalPurchase: () => set({ isModalPurchaseOpen: false }),
-
-    //Estado para hacer el efecto de cambio de color del boton carrito
+    
+    //Estado para hacer el efecto de cambio de color del boton carrito.
     colorBotonCarrito : '#abb1bf',
     setColorBotonCarrito : () => {
       set({colorBotonCarrito: 'rgb(92, 244, 130)'})
@@ -54,74 +35,80 @@ const useCartStore = create((set, get) => {
       }, 500);
     },
 
-    //Estado incial de mi carrito.
-    carritoCompras: new Map(),
-
-
-    // FUNCIONES //
-
-    //Función para agregar productos al carrito.
-    modificarCarrito: (id, operacion = "suma") => {
-      //Aqui no me preocupo de que esta funcion se base en un estado desactualizado ya que cuando se definio se apoyó de el estado de su store
-      //entonces si el estado de su store cambia esta cambia.
-      const productoAgregar = useProductosStore.getState().findProductById(id);
-      if (!productoAgregar) return; 
-      set((state) => {
-        // Creamos una copia del Map actual para trabajar de forma inmutable.
-        const nuevoCarrito = new Map(state.carritoCompras);
-        // Revisamos si ya existe el producto en el carrito.
-        const itemActual = nuevoCarrito.get(id);
-        if (operacion === "suma") {
-          if (itemActual) {
-            nuevoCarrito.set(id, {
-              ...itemActual,
-              cantidadProducto: itemActual.cantidadProducto + 1
-            });
+    //Estado del carrito del usuario.
+    carritoComprasUsuario: null,
+    errorCarrito: null,
+    fetchCartUsuario: async () => {
+      try {
+        const carrito = await getCarritoUser("3fc7185a-c65e-434e-9a11-0562e88a5712")
+        console.log(carrito)
+        set({carritoComprasUsuario: carrito})
+      } catch (error) {
+        console.error("Error al cargar el carrito:", error)
+        set({errorHombre: "Error al cargar el carrito"})
+      }
+    },
+    // Función para agregar o actualizar un producto en el carrito.
+    updateCartItem: async (productId, operacion,  quantityDelta = 1) => {
+      let data = null
+      let idItemAModificar=null
+      const cart = get().carritoComprasUsuario;
+      if (!cart) return; // Si no hay carrito cargado, no hacer nada
+      let updatedItems = [...cart.items];
+        // Buscar si el producto ya está en el carrito
+      let itemIndex = updatedItems.findIndex(item => Number(item.product_id) === Number(productId));
+      if(operacion==="suma"){
+        if (itemIndex > -1) {
+          data = {"quantity": updatedItems[itemIndex].quantity + quantityDelta}
+          idItemAModificar = updatedItems[itemIndex].id
+          await editCartItem(data, idItemAModificar)
+        } else {
+          data = {
+            "cart_id": userCartId,
+            "product_id": productId,
+            "quantity": quantityDelta,
+          }
+          await postCarritoItem(data)
+          console.log(itemIndex)
+        }
+      }else if(operacion==="resta"){
+        if (itemIndex > -1) {
+          if(updatedItems[itemIndex].quantity - quantityDelta > 0){
+            data = {"quantity": updatedItems[itemIndex].quantity - quantityDelta}
+            idItemAModificar = updatedItems[itemIndex].id
+            await editCartItem(data, idItemAModificar)
           } else {
-            nuevoCarrito.set(id, { ...productoAgregar, cantidadProducto: 1 });
+            await deleteCartItem(updatedItems[itemIndex].id)
           }
         } else {
-          if (itemActual) {
-            if (itemActual.cantidadProducto === 1) {
-              nuevoCarrito.delete(id);
-            } else {
-              nuevoCarrito.set(id, {
-                ...itemActual,
-                cantidadProducto: itemActual.cantidadProducto - 1
-              });
-            }
-          }
+          return
         }
-        return { carritoCompras: nuevoCarrito };
-      })
-    },//modificarCarrito().
-
-    //Función para eliminar un producto por su ID.
-    eliminarProductoDeCarrito: (id) => {
-      const carritoComprasPorFiltrar = get().carritoCompras;
-      if (!carritoComprasPorFiltrar.get(id)) return
-      set((state) => {
-        const nuevoCarrito = new Map(state.carritoCompras);
-        nuevoCarrito.delete(id);
-        return { carritoCompras: nuevoCarrito };
-      });
-    },//eliminarProductoDeCarrito().
-
-    //Función que ayuda a calcular el total de dinero que costará el Carrito de Compras.
-    calcularTotal: () => {
-      return [...get().carritoCompras.values()].reduce((total, articulo) => {
-        return total + articulo.price * articulo.cantidadProducto;
-      }, 0);
+      } else {
+        if (itemIndex > -1) {
+          await deleteCartItem(updatedItems[itemIndex].id)}
+        else{
+          return
+        }
+      }
+      await get().fetchCartUsuario()
     },
-
-    //Función para calcular el total de productos que hay en el carrito.
+    // Función que calcula el total de productos en el carrito y que se muestra en el navbar.
     calcularTotalProductos: () => {
-      return [...get().carritoCompras.values()].reduce((total, articulo) => {
-        return total + articulo.cantidadProducto;
-      }, 0);
+      if(get().carritoComprasUsuario !== null){
+        return get().carritoComprasUsuario.items.reduce((total, articulo) => {
+          return total + articulo.quantity;
+        }, 0);
+      }
+    },
+    // Función que calcula el Total de dinero que se va a pagar y que se muestra en el carrito.
+    calcularTotal: () => {
+      if(get().carritoComprasUsuario !== null){
+        return get().carritoComprasUsuario.items.reduce((total, articulo) => {
+            return total + articulo.product.price * articulo.quantity;
+        }, 0)
+      }
     }
 
-  }//Final de mi return.
-})//Final de mi store.
+}))//Final de mi store.
 
 export default useCartStore;
