@@ -1,13 +1,13 @@
 import "../styles/Card.css";
 import { BotonProducto } from "./BotonProducto";
 
-export const Card = ({ id, title, categoria, image, price, talla }) => {
+export const Card = ({ id, title, categoria, image, price}) => {
     return (
         <div className="column is-3 mb-6 mt-6">
             <div className="card has-background-gray">
                 <div className="card-image">
                     <figure className="image">
-                        <img src={`/assets/${ image }`} alt={ title } />
+                        <img src={ image } alt={ title } />
                     </figure>
                 </div>
                 <div className="card-content mt-0 mb-0">
