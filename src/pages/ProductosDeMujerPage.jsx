@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useProductosStore from "../store/useProductosStore";
 import { Card } from '../components/Card';
 import { BuscadorProductos } from '../components/BuscadorProductos';
@@ -7,14 +7,24 @@ import '../styles/ProductosDeAmbosPage.css';
 export const ProductosDeMujerPage = () => {
 
   const [estadoInicialPagina, setEstadoInicialPagina] = useState("")
-
-  const findProducts = useProductosStore((state) => state.findProducts)
-
-  const productosARenderizar = findProducts(estadoInicialPagina, "mujer");
-
   const manejarEstadoInicialPagina = (event) => {
-    setEstadoInicialPagina(event.target.value)
+    setEstadoInicialPagina(event.target.value) 
   }
+  const productosBackMujeres = useProductosStore(state => state.productosBackMujeres)
+  const errorMujer = useProductosStore(state => state.errorMujer)
+  const fetchWomenProducts = useProductosStore(state => state.fetchWomenProducts)
+  const obtenerProductosMujerPorBusqueda = useProductosStore(state => state.obtenerProductosMujerPorBusqueda)
+
+  useEffect(() => {
+    if (estadoInicialPagina.trim() === '') {
+      fetchWomenProducts();
+      return;
+    }
+    const timeoutId = setTimeout(() => {
+      obtenerProductosMujerPorBusqueda(estadoInicialPagina);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [estadoInicialPagina, fetchWomenProducts, obtenerProductosMujerPorBusqueda]);
 
   return (
     <>
@@ -24,18 +34,18 @@ export const ProductosDeMujerPage = () => {
             stagePage={estadoInicialPagina}
             modificarStatePage={manejarEstadoInicialPagina}
           />
+          <h2 class="has-text-centered">Productos de Mujer</h2>
           <div className="columns is-multiline" id="product-list">
             {
-              productosARenderizar.length > 0 ? (
-                productosARenderizar.map(producto => (
+              productosBackMujeres.length > 0 ? (
+                productosBackMujeres.map(producto => (
                   <Card
                     key={producto.id}
                     id={producto.id}
-                    title={producto.title}
-                    categoria={producto.categoria}
+                    title={producto.name}
+                    categoria={producto.category}
                     image={producto.image}
                     price={producto.price}
-                    talla={producto.talla}
                   >
                   </Card>
                 ))
