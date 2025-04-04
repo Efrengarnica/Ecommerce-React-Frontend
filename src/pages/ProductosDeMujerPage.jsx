@@ -3,6 +3,7 @@ import useProductosStore from "../store/useProductosStore";
 import { Card } from '../components/Card';
 import { BuscadorProductos } from '../components/BuscadorProductos';
 import '../styles/ProductosDeAmbosPage.css';
+import useCartStore from '../store/useCartStore';
 
 export const ProductosDeMujerPage = () => {
 
@@ -14,6 +15,8 @@ export const ProductosDeMujerPage = () => {
   const errorMujer = useProductosStore(state => state.errorMujer)
   const fetchWomenProducts = useProductosStore(state => state.fetchWomenProducts)
   const obtenerProductosMujerPorBusqueda = useProductosStore(state => state.obtenerProductosMujerPorBusqueda)
+
+  const carritoComprasUsuario = useCartStore(state => state.carritoComprasUsuario)
 
   useEffect(() => {
     if (estadoInicialPagina.trim() === '') {
@@ -34,7 +37,7 @@ export const ProductosDeMujerPage = () => {
             stagePage={estadoInicialPagina}
             modificarStatePage={manejarEstadoInicialPagina}
           />
-          <h2 class="has-text-centered">Productos de Mujer</h2>
+          <h2 className="has-text-centered">Productos de Mujer</h2>
           <div className="columns is-multiline" id="product-list">
             {
               productosBackMujeres.length > 0 ? (
@@ -46,6 +49,8 @@ export const ProductosDeMujerPage = () => {
                     categoria={producto.category}
                     image={producto.image}
                     price={producto.price}
+                    carritoId={carritoComprasUsuario ? carritoComprasUsuario.id : null}
+                    userId={carritoComprasUsuario ? carritoComprasUsuario.user_id : null}
                   >
                   </Card>
                 ))

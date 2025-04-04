@@ -3,6 +3,7 @@ import useProductosStore from "../store/useProductosStore";
 import { Card } from '../components/Card';
 import { BuscadorProductos } from '../components/BuscadorProductos';
 import '../styles/ProductosDeAmbosPage.css';
+import useCartStore from '../store/useCartStore';
 
 export const ProductosDeHombrePage = () => {
 
@@ -14,6 +15,9 @@ export const ProductosDeHombrePage = () => {
   const manejarEstadoInicialPagina = (event) => {
     setEstadoInicialPagina(event.target.value)
   }
+
+  const carritoComprasUsuario = useCartStore(state => state.carritoComprasUsuario)
+
 
   useEffect(() => {
     if (estadoInicialPagina.trim() === '') {
@@ -34,7 +38,7 @@ export const ProductosDeHombrePage = () => {
             stagePage={estadoInicialPagina}
             modificarStatePage={manejarEstadoInicialPagina}
           />
-          <h2 class="has-text-centered">Productos de Hombre</h2>
+          <h2 className="has-text-centered">Productos de Hombre</h2>
           <div className="columns is-multiline" id="product-list">
             {
               productosBackHombres.length > 0 ? (
@@ -46,6 +50,8 @@ export const ProductosDeHombrePage = () => {
                     categoria={producto.category}
                     image={producto.image}
                     price={producto.price}
+                    carritoId={carritoComprasUsuario ? carritoComprasUsuario.id : null}
+                    userId={carritoComprasUsuario ? carritoComprasUsuario.user_id : null}
                   >
                   </Card>
                 ))
