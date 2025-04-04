@@ -1,6 +1,6 @@
 //GET carrito del usuario por medio de el idCarrito
-async function getCarritoUser(idCarritoUser) {
-    const response = await fetch(`http://localhost:8001/carts/${idCarritoUser}`, {
+async function getCarritoUser(idUser) {
+    const response = await fetch(`http://localhost:8001/carts/${idUser}`, {
         method: "GET",
     })
     if (!response.ok) {

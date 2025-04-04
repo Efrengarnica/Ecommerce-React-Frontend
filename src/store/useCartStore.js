@@ -2,9 +2,7 @@ import { create } from "zustand";
 import useProductosStore from "./useProductosStore";
 import {getCarritoUser, postCarritoItem, editCartItem, deleteCartItem, clearCartItems} from '../../api/requestsCarrito.js'
 
-//Por el momento usaré un usuario, aún no implemento multiples usuarios
-//Datos usuario, en mi base tengo este usuario y este es su id de su carrito
-const userCartId = "3fc7185a-c65e-434e-9a11-0562e88a5712"
+
 
 const useCartStore = create((set, get) => ({
 
@@ -15,14 +13,14 @@ const useCartStore = create((set, get) => ({
 
     //Estados para mostrar el modal de compra exitosa.
     isModalPurchaseOpen: false,
-    openModalPurchase: async() => {
+    openModalPurchase: async(userCartId, userId) => {
       if (get().carritoComprasUsuario?.items?.length === 0)  return
       set({ 
         isCartOpen:false,
         isModalPurchaseOpen:true,
        })
-      await clearCartItems("3fc7185a-c65e-434e-9a11-0562e88a5712")
-      await get().fetchCartUsuario()
+      await clearCartItems(userCartId)
+      await get().fetchCartUsuario(userId)
     },
     closeModalPurchase: () => set({ isModalPurchaseOpen: false }),
     
@@ -38,10 +36,9 @@ const useCartStore = create((set, get) => ({
     //Estado del carrito del usuario.
     carritoComprasUsuario: null,
     errorCarrito: null,
-    fetchCartUsuario: async () => {
+    fetchCartUsuario: async (userId) => {
       try {
-        const carrito = await getCarritoUser("3fc7185a-c65e-434e-9a11-0562e88a5712")
-        console.log(carrito)
+        const carrito = await getCarritoUser(userId)
         set({carritoComprasUsuario: carrito})
       } catch (error) {
         console.error("Error al cargar el carrito:", error)
@@ -49,7 +46,7 @@ const useCartStore = create((set, get) => ({
       }
     },
     // Función para agregar o actualizar un producto en el carrito.
-    updateCartItem: async (productId, operacion,  quantityDelta = 1) => {
+    updateCartItem: async (productId, operacion, userCartId, userId, quantityDelta = 1) => {
       let data = null
       let idItemAModificar=null
       const cart = get().carritoComprasUsuario;
@@ -69,7 +66,6 @@ const useCartStore = create((set, get) => ({
             "quantity": quantityDelta,
           }
           await postCarritoItem(data)
-          console.log(itemIndex)
         }
       }else if(operacion==="resta"){
         if (itemIndex > -1) {
@@ -90,7 +86,7 @@ const useCartStore = create((set, get) => ({
           return
         }
       }
-      await get().fetchCartUsuario()
+      await get().fetchCartUsuario(userId)
     },
     // Función que calcula el total de productos en el carrito y que se muestra en el navbar.
     calcularTotalProductos: () => {
