@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import useCartStore from '../store/useCartStore';
 
-export const CardCarrito = ({ id, image, title, price, cantidadProducto }) => {
+export const CardCarrito = ({ id, image, title, price, cantidadProducto, carritoId, userId }) => {
 
     const updateCartItem = useCartStore((state) => state.updateCartItem)
 
@@ -24,7 +24,11 @@ export const CardCarrito = ({ id, image, title, price, cantidadProducto }) => {
                         <button 
                         type="button" 
                         className="is-flex is-flex-direction-column is-align-items-center is-justify-content-center botones-carrito"
-                        onClick={() => updateCartItem(id, "suma")} 
+                        onClick={() => {
+                            if ( carritoId === null || userId===null ) return
+                            updateCartItem(id, "suma", carritoId, userId)
+                            }
+                        } 
                         >
                             <FontAwesomeIcon icon={faPlus} className="iconos-cart" />
                         </button>
@@ -33,7 +37,11 @@ export const CardCarrito = ({ id, image, title, price, cantidadProducto }) => {
                         <button 
                         type="button" 
                         className="is-flex is-flex-direction-column is-align-items-center is-justify-content-center botones-carrito"
-                        onClick={() => updateCartItem(id, "resta")}
+                        onClick={() => {
+                            if ( carritoId === null || userId===null ) return
+                            updateCartItem(id, "resta", carritoId, userId)
+                            }
+                        }
                         >
                             <FontAwesomeIcon icon={faMinus} className="iconos-cart" />
                         </button>
@@ -42,7 +50,11 @@ export const CardCarrito = ({ id, image, title, price, cantidadProducto }) => {
                         <button 
                         type="button" 
                         className="is-flex is-flex-direction-column is-align-items-center is-justify-content-center botones-carrito"
-                        onClick={() => updateCartItem(id, "eliminar")}
+                        onClick={() => {
+                            if ( carritoId === null || userId===null ) return
+                            updateCartItem(id, "eliminar", carritoId, userId)
+                            }
+                        }
                         >
                             <FontAwesomeIcon icon={faTrash} className="iconos-cart" />
                         </button>

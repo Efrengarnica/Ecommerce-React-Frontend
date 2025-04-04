@@ -1,7 +1,9 @@
 import "../styles/Card.css";
 import { BotonProducto } from "./BotonProducto";
+import useUserStore from "../store/useUserStore";
 
-export const Card = ({ id, title, categoria, image, price}) => {
+export const Card = ({ id, title, categoria, image, price, carritoId, userId }) => {
+    const isActive = useUserStore(state => state.isActive)
     return (
         <div className="column is-3 mb-6 mt-6">
             <div className="card has-background-gray">
@@ -25,6 +27,9 @@ export const Card = ({ id, title, categoria, image, price}) => {
                     <BotonProducto
                     texto={"Agregar a Carrito"}
                     id={id}
+                    isActiveUser={isActive}
+                    carritoId={carritoId}
+                    userId={userId}
                     >   
                     </BotonProducto>
                 </footer>

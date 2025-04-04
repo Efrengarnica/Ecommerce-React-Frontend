@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import useCartStore from '../store/useCartStore'
 import '../styles/ModalCarrito.css'
 import { CardCarrito } from './CardCarrito'
+import useUserStore from '../store/useUserStore'
 
 export const ModalCarrito = () => {
     const isCartOpen = useCartStore((state) => state.isCartOpen);
@@ -11,9 +12,13 @@ export const ModalCarrito = () => {
     const fetchCartUsuario = useCartStore((state) => state.fetchCartUsuario)
     const calcularTotal = useCartStore((state) => state.calcularTotal())
 
+    const user = useUserStore(state => state.dataUser)
+
     useEffect(() => {
-        fetchCartUsuario()
-    }, [])
+        if (user && user.id) {
+            fetchCartUsuario(user.id);
+        }
+      }, [user, fetchCartUsuario]);
 
     return (
         <div className={`modal offcanvas-modal${isCartOpen ? " is-active" : ""}`}>
@@ -39,6 +44,8 @@ export const ModalCarrito = () => {
                                             title={producto.product.name}
                                             price={producto.product.price}
                                             cantidadProducto={producto.quantity}
+                                            carritoId={carritoComprasUsuario ? carritoComprasUsuario.id : null}
+                                            userId={carritoComprasUsuario ? carritoComprasUsuario.user_id : null}
                                         >
                                         </CardCarrito>
                                     ))
@@ -67,7 +74,7 @@ export const ModalCarrito = () => {
                         <button 
                         className="button is-success is-fullwidth" 
                         id="botonFinalizarCompra"
-                        onClick={openModalPurchase}
+                        onClick={() => openModalPurchase(carritoComprasUsuario.id, carritoComprasUsuario.user_id)}
                         >
                             Finalizar compra
                         </button>
