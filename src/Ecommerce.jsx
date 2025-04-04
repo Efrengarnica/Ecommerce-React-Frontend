@@ -7,9 +7,12 @@ import { ContactoPage } from './pages/ContactoPage'
 import { PerfilPage } from './pages/PerfilPage'
 import { ProductosDeHombrePage } from './pages/ProductosDeHombrePage'
 import { ProductosDeMujerPage } from './pages/ProductosDeMujerPage'
+import { Login } from './pages/Login'
+import { SignUp } from './pages/SignUp'
 import './Ecommerce.css'
 import { ModalCarrito } from './components/ModalCarrito'
 import { ModalCompra } from './components/ModalCompra'
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export const Ecommerce = () => {
   return (
@@ -24,6 +27,8 @@ export const Ecommerce = () => {
         <Route path='/perfil' element={<PerfilPage></PerfilPage>}></Route>
         <Route path='/productos-hombre' element={<ProductosDeHombrePage></ProductosDeHombrePage>}></Route>
         <Route path='/productos-mujer' element={<ProductosDeMujerPage></ProductosDeMujerPage>}></Route>
+        <Route path='/login' element={<Login></Login>}></Route>
+        <Route path='/signUp' element={<SignUp></SignUp>}></Route>
         <Route path='/*' element={<Navigate to='/'/>}></Route>
       </Routes>
     </div>
