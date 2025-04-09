@@ -12,6 +12,7 @@ import { SignUp } from './pages/SignUp'
 import './Ecommerce.css'
 import { ModalCarrito } from './components/ModalCarrito'
 import { ModalCompra } from './components/ModalCompra'
+import { ModalModificarCarrito } from './components/ModalModificarCarrito'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export const Ecommerce = () => {
@@ -20,6 +21,7 @@ export const Ecommerce = () => {
       <Navbar></Navbar>
       <ModalCarrito/>
       <ModalCompra/>
+      <ModalModificarCarrito/>
       <Routes>
         <Route path='/' element={<EcommercePage></EcommercePage>}></Route>
         <Route path='/acercaDe' element={<AcercaDePage></AcercaDePage>}></Route>
