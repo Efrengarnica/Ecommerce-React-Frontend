@@ -11,10 +11,21 @@ async function getUser(correoUser, passwordUser) {
         },
         body: JSON.stringify(data)
     })
+    //Aquí dependiendo del status code del back le doy un nombre para después sepa que mostrale al usaurio en el front.
+
+    //Contraseña incorrecta.
+    if (response.status === 401) {
+    throw new Error("Las credenciales proporcionadas no coinciden.");  
+    }
+    //No existe email registrado.
+    if (response.status === 404) {
+        throw new Error("No hay usuario registrado con ese email.");  
+    }
+    //Cualquier otro error.
     if (!response.ok) {
         throw new Error("Error get user");
     }
-    const user = await response.json()
+    const user = await response.json();
     return user
 }
 
