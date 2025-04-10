@@ -9,13 +9,13 @@ export const ModalModificarCarrito = () => {
     //Aparece siempre y cuando salga algo mal y lo podemos cerrar con cerrarErrorModificarCarrito.
     return (
         <div className={`modal ${errorModificarCarrito ? " is-active" : ""}`}>
-            <div class="modal-background" onClick={cerrarErrorModificarCarrito}></div>
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">Error, no se aplicaron correctamente los cambios.</p>
-                    <button class="delete" aria-label="close" onClick={cerrarErrorModificarCarrito}></button>
+            <div className="modal-background" onClick={cerrarErrorModificarCarrito}></div>
+            <div className="modal-card">
+                <header className="modal-card-head">
+                    <p className="modal-card-title">Error, no se aplicaron correctamente los cambios.</p>
+                    <button className="delete" aria-label="close" onClick={cerrarErrorModificarCarrito}></button>
                 </header>
-                <section class="modal-card-body">
+                <section className="modal-card-body">
                     <p>Su acción no fue exitosa.</p>
                 </section>
             </div>
