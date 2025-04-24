@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import useUserStore from '../store/useUserStore';
 
-export const Form = ({ dataUsuario, modificarData, guardarCambios }) => {
+export const Form = ({ dataUsuario, modificarData, guardarCambios, resetarValores, abrirModal }) => {
     const [name, setName] = useState(dataUsuario?.name || "");
     const [correo, setCorreo] = useState(dataUsuario?.email || "");
-    const [contraseña, setContraseña] = useState(dataUsuario?.password || "");
+    const isLoading = useUserStore(state => state.isLoadingModificarDatosUsuario)
+
+    //Cuando data cambie entonces modificas el valor de los inputs, esto es para que funcione el reset de valores.
+    useEffect(() => {
+        setName(dataUsuario?.name  || "");
+        setCorreo(dataUsuario?.email || "");
+      }, [dataUsuario]);
+
     return (
-        <form>
+        <form onSubmit={guardarCambios}>
             <div className="field">
-                <label className="label" for="name">Nombre</label>
+                <label className="label" htmlFor ="name">Nombre</label>
                 <div className="control">
                     <input 
                     className="input" 
@@ -24,7 +32,7 @@ export const Form = ({ dataUsuario, modificarData, guardarCambios }) => {
             </div>
 
             <div className="field">
-                <label className="label" for="email">Correo electrónico</label>
+                <label className="label" htmlFor ="email">Correo electrónico</label>
                 <div className="control">
                     <input 
                     className="input" 
@@ -41,30 +49,28 @@ export const Form = ({ dataUsuario, modificarData, guardarCambios }) => {
             </div>
 
             <div className="field">
-                <label className="label" for="password">Contraseña</label>
-                <div className="control">
-                    <input 
-                    className="input" 
-                    value={contraseña}
-                    type="password" 
-                    id="password" 
-                    placeholder="Introduce tu contraseña" 
-                    onChange={(e) => {
-                        setContraseña(e.target.value)
-                        modificarData({password: e.target.value})
-                    }}
-                    required/>
-                </div>
-            </div>
-
-            <div className="field">
                 <div className="control">
                     <button 
-                    className="button is-primary mr-4" 
+                    className={isLoading ? "button is-primary mr-4 is-loading" : "button is-primary mr-4"}
                     type="submit"
-                    onClick={() => guardarCambios()}
-                    >Guardar</button>
-                    <button className="button is-danger" type="button">Cancelar</button>
+                  
+                    >
+                        Guardar
+                    </button>
+                    <button 
+                    className="button is-danger mr-4" 
+                    type="button"
+                    onClick={resetarValores}
+                    >
+                        Cancelar
+                    </button>
+                    <button 
+                    className="button is-link" 
+                    type="button"
+                    onClick={abrirModal}
+                    >
+                        Cambiar Contraseña
+                    </button>
                 </div>
             </div>
         </form>
