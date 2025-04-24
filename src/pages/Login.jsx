@@ -1,32 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../styles/Login.css'
 import useUserStore from '../store/useUserStore'
 import { useNavigate } from "react-router-dom";
+import { ModalFalloIngresar } from '../components/ModalFalloIngresar';
 
 export const Login = () => {
-    const navigate = useNavigate(); // Definir navigate
+    //Necesario para navegar a otra pestaña.
+    const navigate = useNavigate()
+    //Estados que se modifican en cada input y que me ayudarán a realizar la petición.
     const [correo, setcorreo] = useState("")
     const [contraseña, setcontraseña] = useState("")
-
+    //Función que realiza la petición del usuario con los datos, correo y contraseña.
     const fetchUser = useUserStore(state => state.fetchUser)
-
+    //Estados que me ayudarán a mostrar cargando o error si falla la petición.
+    const isloadingDataUser = useUserStore(state => state.isloadingDataUser)
+    const errorLoadingDataUser = useUserStore(state => state.errorLoadingDataUser)
+    //Función que al parecer realiza el envió de los datos y ejecuta la petición.
     const entrarSistema = async(event) => {
         event.preventDefault();
         if(correo === "" || contraseña === "") {
             alert("Llena los 2 campos")
         } else {
-            try {
-                await fetchUser(correo, contraseña);
-                // Si fetchUser sale bien, redirigimos a otra página, por ejemplo "/dashboard"
-                navigate("/");
-              } catch (error) {
-                // Si ocurre algún error, mostramos el alert
-                console.log(error)
-              }
+            await fetchUser(correo, contraseña);
         }
     }
+    //Estado que me dice si un usuario pudo entrar en la app correctamente.
+    const isActive = useUserStore(state => state.isActive)
+    //Me ayuda a que cuando haya un usuario en la app activo entonces se redirija a la portada de la app.
+    useEffect(() => {
+        if (isActive) {
+        navigate('/');
+        }
+    }, [isActive, navigate]);
+
     return (
         <div className='login-page'>
+            <ModalFalloIngresar/>
             <h1 className='title mb-5'>Ingresa a la Ecommerce</h1>
             <div className='box formulario-ingreso is-flex is-flex-direction-column is-justify-content-center'>
                 <form onSubmit={entrarSistema}>
@@ -43,9 +52,6 @@ export const Login = () => {
                             />
                             <span className="icon is-small is-left">
                                 <i className="fas fa-envelope"></i>
-                            </span>
-                            <span className="icon is-small is-right">
-                                <i className="fas fa-check"></i>
                             </span>
                         </p>
                     </div>
@@ -70,7 +76,7 @@ export const Login = () => {
                         <p className="control">
                             <button 
                             type="submit" 
-                            className="button is-success boton-registro"
+                            className={isloadingDataUser ? "button is-success is-loading" : "button is-success boton-registro"}
                             >
                                 Entrar
                             </button>
