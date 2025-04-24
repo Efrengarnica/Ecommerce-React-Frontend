@@ -22,14 +22,14 @@ export const BotonProducto = ({ texto, id, isActiveUser, carritoId, userId }) =>
     }
     if ( idCarritoUser === null || idUser===null ) return
     setColorBotonCarrito()
-    updateCartItem(idProducto, operacion, idCarritoUser, idUser, isActiveUser)
+    updateCartItem(idProducto, operacion, idCarritoUser, idUser, hayUsuario)
   }
 
   return (
     <button 
     type="button" 
     className="agregarACarrito button is-light has-background-black has-text-white mt-3"
-    onClick={() => accionesBoton(id, "suma", carritoId, userId)}
+    onClick={() => accionesBoton(id, "suma", carritoId, userId, isActiveUser)}
     >
     {texto}
     </button>
