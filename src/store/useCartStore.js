@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import useProductosStore from "./useProductosStore";
 import {getCarritoUser, postCarritoItem, editCartItem, deleteCartItem, clearCartItems} from '../../api/requestsCarrito.js'
 
 
